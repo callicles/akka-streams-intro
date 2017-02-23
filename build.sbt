@@ -16,5 +16,5 @@ libraryDependencies ++= Seq(
 
   "org.apache.lucene" % "lucene-analyzers-common" % "6.4.0",
 
-  "com.lightbend.akka" %% "akka-stream-alpakka-s3" % "0.5"
+  "com.lightbend.akka" %% "akka-stream-alpakka-s3" % "0.6"
 )
