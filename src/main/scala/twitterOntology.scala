@@ -4,7 +4,7 @@ import akka.http.scaladsl.Http
 import akka.stream.alpakka.s3.acl.CannedAcl
 import akka.stream.alpakka.s3.auth.AWSCredentials
 import akka.stream.alpakka.s3.scaladsl.S3Client
-import akka.stream.scaladsl.{Framing, Keep,}
+import akka.stream.scaladsl.{Framing, Keep}
 import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
 import twitter.{Tweet, Twitter}
@@ -49,7 +49,7 @@ object twitterOntology extends App {
         print(s"\r Processed Tweets: $parsedTweet")
         tweet
     }
-    .map(tweet =>  ByteString(tokenizer.tokenizeTweet(tweet).mkString(",") + "\n"))
+    .map(tweet => ByteString(tokenizer.tokenizeTweet(tweet).mkString(",") + "\n"))
     .toMat(s3Client.multipartUpload(
       bucket, "twitter_tokenized_tweets/tweets.txt", cannedAcl = CannedAcl.BucketOwnerFullControl
     ))(Keep.both)

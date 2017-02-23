@@ -2,7 +2,7 @@ import java.nio.file.Paths
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.FileIO
+import akka.stream.scaladsl.{FileIO, Sink}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -19,9 +19,11 @@ object together extends App {
     .map(_.decodeString("UTF-8"))
     .map(str => str.split("\\s+").length)
     .fold(0)((acc, length) => acc + length)
+    .to(Sink.foreach(count => println(s"Number of words: $count")))
 
   // Materialization
-  blueprint.runForeach(count => println(s"Number of words: $count"))
+  blueprint
+    .run()
     .flatMap { _ =>
       system.terminate()
     }
