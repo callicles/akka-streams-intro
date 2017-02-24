@@ -1,4 +1,6 @@
 import akka.NotUsed
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Tcp.OutgoingConnection
 import akka.stream.scaladsl.{Flow, Sink, Source, Tcp}
 import akka.util.ByteString
@@ -6,6 +8,9 @@ import akka.util.ByteString
 import scala.concurrent.Future
 
 object MaterializedValues extends App {
+
+  implicit val system = ActorSystem("twitter")
+  implicit val materializer = ActorMaterializer()
 
   // Outputs ints and doesn't materializes any value
   val intSource: Source[Int, NotUsed] = Source(List(1, 2, 3))
